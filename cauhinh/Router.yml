@@ -35,6 +35,14 @@
         lines:
           - no shut
           - ip ospf 1 area 0 
+    - name: OSPF 
+      ios_config:
+        parents:
+          - router ospf 1
+        lines:
+          - network 172.16.12.0 0.0.0.255 area 0
+          - network 172.16.15.0 0.0.0.255 area 0
+
     - debug: var=show_ip.stdout_lines # debug: in ra màn hình, đặt biến var(lấy thông tin của các dòng từ show_ip gắn vào),in biến var
 
 - name: dat ip cho loobpack
@@ -59,7 +67,7 @@
         parents: # vào mode config của lệnh dưới
           - router ospf 1
         lines: # các lệnh sẽ thực hiện
-          - router-id 1.1.1.1
+          - router-id 2.2.2.2
     - name: set ip OSPF e0/1
       ios_config:
         parents:
@@ -74,5 +82,13 @@
         lines:
           - no shut
           - ip ospf 1 area 0 
+    - name: OSPF 
+      ios_config:
+        parents:
+          - router ospf 1
+        lines:
+          - network 172.16.15.0 0.0.0.0 area 0
+          - network 172.16.13.0 0.0.0.0 area 0
+
     - debug: var=show_ip.stdout_lines # debug: in ra màn hình, đặt biến var(lấy thông tin của các dòng từ show_ip gắn vào),in biến var
 

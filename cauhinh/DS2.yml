@@ -1,0 +1,64 @@
+- name: HSRP DS2
+  hosts: DS2
+  tasks:
+    - name: HSRP 201
+      ios_config:
+        parents:
+          - int vlan 201
+        lines:
+          - ip address 172.18.18.2 255.255.254.0
+          - standby 201 ip 172.18.18.1
+          - standby 201 priority 100
+          - standby 201 preempt
+          - ip ospf 1 area 0
+          - no shut
+    - name: HSRP 202
+      ios_config: 
+        parents: 
+          - int vlan 202 
+        lines: 
+          - ip address 172.18.20.2 255.255.254.0 
+          - standby 202 ip 172.18.20.1
+          - standby 202 priority 150 
+          - standby 202 preempt
+          - ip ospf 1 area 0
+          - no shut
+    - name: HSRP 203
+      ios_config: 
+        parents: 
+          - int vlan 203 
+        lines: 
+          - ip address 172.18.22.2 255.255.254.0 
+          - standby 203 ip 172.18.22.1
+          - standby 203 priority 100
+          - standby 203 preempt
+          - ip ospf 1 area 0
+          - no shut
+    - name: HSRP 204
+      ios_config: 
+        parents: 
+          - int vlan 204 
+        lines: 
+          - ip address 172.18.24.2 255.255.255.0 
+          - standby 204 ip 172.18.24.1
+          - standby 204 priority 150 
+          - standby 204 preempt
+          - ip ospf 1 area 0
+          - no shut
+
+
+    - name: set OSPF # cài đặt OSPF
+      ios_config:
+        parents: # vào mode config của lệnh dưới
+          - router ospf 1
+        lines: # các lệnh sẽ thực hiệnno
+          - router-id 4.4.4.4
+    - name: Set interface e1/1
+      ios_config:
+        parents:
+          - int e1/1
+        lines:
+          - no sw
+          - no sh
+          - ip address 172.16.15.2 255.255.255.0
+          - do wr

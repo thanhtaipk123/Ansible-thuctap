@@ -57,8 +57,8 @@
     - name: tao vlan
       ios_vlan:
         aggregate:
-        - { vlan_id : 204 }
-	- { vlan_id : 205 }
+          - { vlan_id : 204 }
+          - { vlan_id : 205 }
     - name: show vlan
       ios_command:
         commands:
@@ -87,5 +87,5 @@
           - int e3/2
         lines:
           - sw acc vlan 205
-	  - do wr
+          - do wr
     - debug: var=show_ip.stdout_lines
