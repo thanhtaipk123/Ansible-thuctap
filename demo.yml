@@ -1,0 +1,13 @@
+---
+- name: demo ansible playbook
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: task1
+      ios_command:
+        commands: "sh run"
+      register: show_ip
+    - debug: var=show_ip.stdout_lines
+                      
+         

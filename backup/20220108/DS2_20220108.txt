@@ -1,0 +1,141 @@
+Building configuration...
+
+  
+Current configuration : 1796 bytes
+!
+! Last configuration change at 03:26:44 EET Fri Jan 7 2022 by huy
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname DS2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 321
+!
+username huy password 0 123
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name huy.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ switchport access vlan 200
+ switchport mode access
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet1/0
+ no switchport
+ ip address 172.16.13.2 255.255.255.0
+ duplex auto
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!
+interface Ethernet2/3
+!
+interface Ethernet3/0
+!
+interface Ethernet3/1
+!
+interface Ethernet3/2
+!
+interface Ethernet3/3
+!
+interface Vlan200
+ ip address 192.168.1.53 255.255.255.0
+!
+interface Vlan201
+ ip address 172.18.18.3 255.255.254.0
+ standby 201 ip 172.18.18.2
+ standby 201 preempt
+ ip ospf 1 area 0
+ shutdown
+!
+interface Vlan202
+ ip address 172.18.20.3 255.255.254.0
+ standby 202 ip 172.18.20.1
+ standby 202 preempt
+ ip ospf 1 area 0
+ shutdown
+!
+router ospf 1
+ router-id 2.2.2.2
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ password 123
+ login local
+!
+!
+end

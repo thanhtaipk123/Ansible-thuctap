@@ -1,0 +1,12 @@
+---
+- name: Push Cau hinh
+  hosts: AS1
+  gather_facts: false
+  
+  tasks:
+    - name: Push config file
+      ios_config:
+        src: "/home/ubuntu/ansible/backup/20220107/AS1_20220107.txt"
+    - name: Push cau hinh
+      ios_config:
+        save_when: modified

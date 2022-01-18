@@ -1,0 +1,91 @@
+---
+- name: AS1
+  hosts: AS1
+  gather_facts: no
+  tasks:
+    - name: tao vlan
+      ios_vlan :
+        aggregate:
+          - { vlan_id : 10 }
+          - { vlan_id : 20 }
+          - { vlan_id : 201 }
+          - { vlan_id : 202 }
+          - { vlan_id : 203 }
+    - name: show vlan
+      ios_command:
+        commands:
+          - show vlan
+      register: show_ip
+    - name: config
+      ios_config:
+        lines:
+          - spanning-tree mode rapid-pvst
+    - name: chuyen cong e0/1 - e0/2 sang mode trunk
+      ios_config:
+        parents:
+          - int range e0/1-2
+        lines:
+          - sw trunk en dot1Q
+          - sw mode trunk
+
+    - name: sw acc vlan 201
+      ios_config:
+        parents:
+          - int e3/1
+        lines:
+          - sw acc vlan 201
+
+    - name: sw acc vlan 202
+      ios_config:
+        parents:
+          - int e3/2
+        lines:
+          - sw acc vlan 202
+
+    - name: sw acc vlan 203
+      ios_config:
+        parents:
+          - int e3/3
+        lines:
+          - sw acc vlan 203
+    - debug: var=show_ip.stdout_lines
+# 
+- name: AS2
+  hosts: AS2 
+  gather_facts: no
+  tasks:
+    - name: tao vlan
+      ios_vlan:
+        aggregate:
+        - { vlan_id : 204 }
+	- { vlan_id : 205 }
+    - name: show vlan
+      ios_command:
+        commands:
+          - show vlan
+      register: show_ip
+    - name: config
+      ios_config:
+        lines:
+          - spanning-tree mode rapid-pvst
+    - name: chuyen cong e0/1 - e0/2 sang mode trunk
+      ios_config: 
+        parents: 
+          - int range e0/1-2 
+        lines:
+          - sw trunk en dot1Q 
+          - sw mode trunk
+    - name: sw acc vlan 204
+      ios_config:
+        parents:
+          - int e3/1
+        lines:
+          - sw acc vlan 204
+    - name: sw acc vlan 205
+      ios_config:
+        parents:
+          - int e3/2
+        lines:
+          - sw acc vlan 205
+	  - do wr
+    - debug: var=show_ip.stdout_lines

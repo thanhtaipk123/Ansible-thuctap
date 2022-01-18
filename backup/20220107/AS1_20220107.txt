@@ -1,0 +1,118 @@
+Building configuration...
+
+  
+Current configuration : 1326 bytes
+!
+! Last configuration change at 16:16:30 EET Thu Jan 6 2022 by huy
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname AS1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 321
+!
+username huy password 0 123
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name huy.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ switchport access vlan 200
+ switchport mode access
+!
+interface Ethernet0/1
+!
+interface Ethernet0/2
+!
+interface Ethernet0/3
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!
+interface Ethernet2/3
+!
+interface Ethernet3/0
+!
+interface Ethernet3/1
+ switchport access vlan 201
+!
+interface Ethernet3/2
+ switchport access vlan 202
+!
+interface Ethernet3/3
+ switchport access vlan 203
+!
+interface Vlan200
+ ip address 192.168.1.54 255.255.255.0
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ password 123
+ login local
+!
+!
+end

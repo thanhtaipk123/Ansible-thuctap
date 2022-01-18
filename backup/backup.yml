@@ -1,0 +1,39 @@
+---
+- name: Tao file ngay hom nay
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: timestamp
+      local_action: command date +%Y%m%d
+      register: timestamp
+
+    - name: create local directory
+      file:
+        path: /home/ubuntu/ansible/backup/{{ timestamp.stdout }}
+        state: directory
+        mode: 0755 
+
+- name: Save Configurations (IOS)
+  hosts: all
+  gather_facts: no
+  ignore_errors: yes
+  vars:
+
+  tasks:
+    - name: timestamp
+      local_action: command date +%Y%m%d
+      register: timestamp
+
+    - ios_command:
+        
+        commands: show run
+      register: show_run_ios
+
+#    - debug:
+#        msg: "{{ show_run_ios.stdout[0] }}"
+
+    - copy:
+        content: "{{ show_run_ios.stdout[0] }}"
+        dest: "/home/ubuntu/ansible/backup/{{ timestamp.stdout }}/{{ inventory_hostname }}_{{ timestamp.stdout }}.txt"
+

@@ -1,0 +1,78 @@
+---
+- name: dat ip cho loobpack
+  hosts: R1 # tên của thiết bị trong Ansible server( vì ở đây chỉ có router nên có thể để all)
+# các tác vụ
+  tasks:
+    - name: Set loopback IPv4 address # Đặt tên task để quản lý
+      ios_l3_interface: # do cấu hình router nên bắt buộc khai báo như vậy
+        name: loopback 2 # tên cổng
+        ipv4: 10.0.0.1/24 # địa chỉ IP của loopback
+    - name: Set e0/3 IPv4 address # đặt IP cho cổng
+      ios_l3_interface:
+        name: e0/3 # tên cổng
+        ipv4: 172.16.15.1/24 # địa chỉ IP cho cổng
+    - name: Set e0/1 IPv4 address
+      ios_l3_interface:
+        name: e0/1 
+        ipv4: 172.16.12.1/24
+    - name: set OSPF # cài đặt OSPF
+      ios_config:
+        parents: # vào mode config của lệnh dưới
+          - router ospf 1
+        lines: # các lệnh sẽ thực hiện
+          - router-id 1.1.1.1
+    - name: set ip OSPF e0/1
+      ios_config:
+        parents:
+          - int e0/1
+        lines:
+          - no shut
+          - ip ospf 1 area 0
+    - name: set ip OSPF e0/3
+      ios_config:
+        parents:
+          - int e0/3
+        lines:
+          - no shut
+          - ip ospf 1 area 0 
+    - debug: var=show_ip.stdout_lines # debug: in ra màn hình, đặt biến var(lấy thông tin của các dòng từ show_ip gắn vào),in biến var
+
+- name: dat ip cho loobpack
+  hosts: R2 # tên của thiết bị trong Ansible server( vì ở đây chỉ có router nên có thể để all)
+# các tác vụ
+  tasks:
+    - name: Set loopback IPv4 address # Đặt tên task để quản lý
+      ios_l3_interface: # do cấu hình router nên bắt buộc khai báo như vậy
+        name: loopback 2 # tên cổng
+        ipv4: 10.0.0.1/24 # địa chỉ IP của loopback
+    - name: Set e0/3 IPv4 address # đặt IP cho cổng
+      ios_l3_interface:
+        name: e0/3 # tên cổng
+        ipv4: 172.16.14.1/24 # địa chỉ IP cho cổng
+    - name: Set e0/1 IPv4 address
+      ios_l3_interface:
+        name: e0/1 
+        ipv4: 172.16.13.1/24
+ 
+    - name: set OSPF # cài đặt OSPF
+      ios_config:
+        parents: # vào mode config của lệnh dưới
+          - router ospf 1
+        lines: # các lệnh sẽ thực hiện
+          - router-id 1.1.1.1
+    - name: set ip OSPF e0/1
+      ios_config:
+        parents:
+          - int e0/1
+        lines:
+          - no shut
+          - ip ospf 1 area 0
+    - name: set ip OSPF e0/3
+      ios_config:
+        parents:
+          - int e0/3
+        lines:
+          - no shut
+          - ip ospf 1 area 0 
+    - debug: var=show_ip.stdout_lines # debug: in ra màn hình, đặt biến var(lấy thông tin của các dòng từ show_ip gắn vào),in biến var
+
