@@ -1,0 +1,20 @@
+---
+- name: Cau hinh IGMP snooping cho AS
+  hosts: AS1
+  tasks:
+    - name: 
+      ios_config:
+        lines:
+          - ip igmp snooping
+          - ip igmp snooping vlan 202 mrouter int e0/1
+    - name:      
+      ios_command:
+        commands:
+          - debug ip igmp snooping router
+          - debug ip igmp snooping 239.1.1.1
+    - name:
+      ios_command:
+        commands:
+          - show ip igmp snooping
+      register: show_igmp_snooping
+    - debug: var=show_igmp_snooping.stdout_lines

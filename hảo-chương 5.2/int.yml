@@ -1,0 +1,10 @@
+---
+- name: xem Groups cua cac thiet bi AS1
+  hosts: AS1
+  tasks:
+    - name: show groups
+      ios_command:
+        commands:
+          - show ip igmp snooping groups
+      register: show_group
+    - debug: var=show_group.stdout_lines

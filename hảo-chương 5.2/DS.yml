@@ -1,0 +1,22 @@
+---
+- name: dinh tuyen PIM cho DS
+  hosts: DS1
+  tasks:
+    - name: bat multicast-routing
+      ios_config:
+        lines:
+          - ip multicast-routing
+    - name:  cau hinh cong igmp
+      ios_config:
+        parents:
+          - int range e0/1,e0/2,e1/2
+        lines:
+          - ip pim sparse-mode
+    - name: show 
+      ios_command:
+        commands:
+          - show ip igmp interface
+      register: show_igmp
+    - debug: var=show_igmp.stdout_lines
+    
+
